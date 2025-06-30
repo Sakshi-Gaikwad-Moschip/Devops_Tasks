@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: work-queue-job
+spec:
+  parallelism: 4
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: python:3.9
+        command: ["python", "-u", "worker.py"]
+        env:
+        - name: REDIS_HOST
+          value: redis-service
+      restartPolicy: Never
